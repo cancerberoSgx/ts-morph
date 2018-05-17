@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/dsherret/ts-simple-ast/badge.svg?branch=master&service=github)](https://coveralls.io/github/dsherret/ts-simple-ast?branch=master)
 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
-[TypeScript](https://github.com/Microsoft/TypeScript) Compiler API wrapper. Provides a simple way to navigate and manipulate TypeScript and JavaScript code.
+[TypeScript](https://github.com/Microsoft/TypeScript) Compiler [API](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API) wrapper. Provides a simple way to navigate and manipulate TypeScript and JavaScript code.
 
 ## Library Development - Progress Update (08 April 2018)
 

@@ -27,6 +27,9 @@ export function cloneNamespaces(node: StatementedNode, cloningNamespaces: Namesp
     }
 }
 
+/**
+ * Clone given interface declarations into given parent node (for example a SourceFile)
+ */
 export function cloneInterfaces(node: StatementedNode, cloningInterfaces: InterfaceDeclaration[]) {
     node.addInterfaces(cloningInterfaces.map(cloningInterface => ({
         isExported: true,
@@ -92,6 +95,9 @@ export function cloneTypeAliases(node: StatementedNode, typeAliases: TypeAliasDe
     })));
 }
 
+/**
+ * Clone given class declarations into given parent node (for example a SourceFile)
+ */
 export function cloneClasses(node: StatementedNode, classes: ClassDeclaration[]) {
     node.addClasses(classes.map(c => ({
         name: c.getName(),
@@ -101,6 +107,8 @@ export function cloneClasses(node: StatementedNode, classes: ClassDeclaration[])
             name: p.getName(),
             constraint: p.getConstraintNode() == null ? undefined : p.getConstraintNode()!.getText()
         })),
+        extends: (c && c.getExtends()) ? c.getExtends().getText() : "",
+        implements: c.getImplements() ? c.getImplements().map(i => i.getText()) : [],
         docs: c.getJsDocs().map(d => ({ description: d.getInnerText().replace(/\r?\n/g, "\r\n") })),
         ctors: c.getConstructors().map(ctor => ({
             docs: ctor.getJsDocs().map(d => ({ description: d.getInnerText().replace(/\r?\n/g, "\r\n") })),

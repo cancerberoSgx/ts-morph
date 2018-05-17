@@ -1,7 +1,7 @@
 ﻿/**
  * Code Manipulation - Refactor
  * ----------------------------
- * Use this script as a strating point when refactoring the application.
+ * Use this script as a starting point when refactoring the application.
  * Edit within the for..of loop.
  * ----------------------------
  */

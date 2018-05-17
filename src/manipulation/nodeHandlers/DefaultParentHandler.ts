@@ -14,7 +14,7 @@ export interface DefaultParentHandlerOptions {
 }
 
 /**
- * Handler for deailing with a parent that is going to have a child replaced.
+ * Handler for dealing with a parent that is going to have a child replaced.
  */
 export class DefaultParentHandler implements NodeHandler {
     private readonly straightReplacementNodeHandler: StraightReplacementNodeHandler;

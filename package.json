@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
-    "@types/chalk": "^2.2.0",
     "@types/diff": "^3.5.1",
     "@types/glob-parent": "^3.1.0",
     "@types/is-negated-glob": "^1.0.0",
