@@ -10,7 +10,7 @@
 
 ## Library Development - Progress Update (08 April 2018)
 
-v10.2.0 will have some massive performance improvements in some scenarios. If you notice any bugs due to this change then please let me know by opening an issue.
+v10.2.0 have some massive performance improvements in some scenarios. If you notice any bugs due to this change then please let me know by opening an issue.
 
 View information on breaking changes in [breaking-changes.md](breaking-changes.md).
 
@@ -26,6 +26,7 @@ View a generated report on what nodes have been wrapped in the [wrapped-nodes.md
 
 ```sh
 yarn install
+yarn run lint
 yarn run build
 yarn test
 ```
