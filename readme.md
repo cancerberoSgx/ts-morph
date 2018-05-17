@@ -22,6 +22,14 @@ Please open an issue if find a feature missing or bug that isn't in the issue tr
 
 View a generated report on what nodes have been wrapped in the [wrapped-nodes.md](wrapped-nodes.md) file.
 
+### Install and Run Tests
+
+```sh
+yarn install
+yarn run build
+yarn test
+```
+
 ## Documentation
 
 Work in progress: https://dsherret.github.io/ts-simple-ast/
