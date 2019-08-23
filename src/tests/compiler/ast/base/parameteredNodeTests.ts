@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { FunctionDeclaration, ParameterDeclaration, ParameteredNode, Scope } from "../../../../compiler";
 import { ParameterDeclarationStructure, ParameteredNodeStructure, OptionalKind } from "../../../../structures";
 import { getInfoFromText, OptionalKindAndTrivia } from "../../testHelpers";
+import { TypeScriptVersionChecker } from "../../../../utils";
 
 describe(nameof(ParameteredNode), () => {
     describe(nameof<ParameteredNode>(d => d.getParameter), () => {
@@ -179,15 +180,17 @@ describe(nameof(ParameteredNode), () => {
         });
     });
 
-    describe(nameof<ParameteredNode>(m => m.convertParamsToDestructuredObject), () => {
-        it("should convert a function declaration's parameters", () => {
-            const { firstChild, sourceFile } = getInfoFromText<FunctionDeclaration>("function f(a: number, b: string[]) { }; export const a = f(1, ['1']);");
-            firstChild.convertParamsToDestructuredObject();
-            expect(sourceFile.getText()).to.equal("function f({ a, b }: { a: number; b: string[]; }) { }; export const a = f({ a: 1, b: ['1'] });");
-        });
+    if (TypeScriptVersionChecker.isGreaterThan(3, 4, 0)) {
+        describe(nameof<ParameteredNode>(m => m.convertParamsToDestructuredObject), () => {
+            it("should convert a function declaration's parameters", () => {
+                const { firstChild, sourceFile
+                } = getInfoFromText<FunctionDeclaration>("function f(a: number, b: string[]) { }; export const a = f(1, ['1']);");
+                firstChild.convertParamsToDestructuredObject();
+                expect(sourceFile.getText()).to.equal("function f({ a, b }: { a: number; b: string[]; }) { }; export const a = f({ a: 1, b: ['1'] });");
+            });
 
-        it("should not convert class' methods overriding", () => {
-            const { sourceFile } = getInfoFromText<FunctionDeclaration>(`
+            it("should not convert class' methods overriding", () => {
+                const { sourceFile } = getInfoFromText<FunctionDeclaration>(`
 interface I {
     m(a: Date[], b: boolean, c?: string, d?: number[][]): void
 }
@@ -195,8 +198,8 @@ class C implements I {
     m(a: Date[], b: boolean, c?: string, d?: number[][]) { }
     n(a: Date[], b: boolean, c?: string, d?: number[][]) { }
 }`);
-            sourceFile.getClassOrThrow("C").getMethods().forEach(m => m.convertParamsToDestructuredObject());
-            expect(sourceFile.getText().trim()).to.equal(`
+                sourceFile.getClassOrThrow("C").getMethods().forEach(m => m.convertParamsToDestructuredObject());
+                expect(sourceFile.getText().trim()).to.equal(`
 interface I {
     m(a: Date[], b: boolean, c?: string, d?: number[][]): void
 }
@@ -204,6 +207,7 @@ class C implements I {
     m(a: Date[], b: boolean, c?: string, d?: number[][]) { }
     n({ a, b, c, d }: { a: Date[]; b: boolean; c?: string; d?: number[][]; }) { }
 }`.trim());
+            });
         });
-    });
+    }
 });
