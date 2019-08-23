@@ -208,6 +208,14 @@ class C implements I {
     n({ a, b, c, d }: { a: Date[]; b: boolean; c?: string; d?: number[][]; }) { }
 }`.trim());
             });
+
+            it("should refactor all files", () => {
+                const { sourceFile, project } = getInfoFromText<FunctionDeclaration>("export function f(a: number, b: string[]) { }", { filePath: "f.ts" });
+                const sourceFile2 = project.createSourceFile("a.ts", `import {f} = require("./f"); f(1, "b");`);
+                sourceFile.getFunctionOrThrow("f").convertParamsToDestructuredObject();
+                expect(sourceFile.getText()).to.equal(`export function f({ a, b }: { a: number; b: string[]; }) { }`);
+                expect(sourceFile2.getText()).to.equal(`import {f} = require("./f"); f(1, "b");`);
+            });
         });
     }
 });
