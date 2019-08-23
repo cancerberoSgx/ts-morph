@@ -209,13 +209,17 @@ class C implements I {
 }`.trim());
             });
 
-            it("should refactor all files", () => {
-                const { sourceFile, project } = getInfoFromText<FunctionDeclaration>("export function f(a: number, b: string[]) { }", { filePath: "f.ts" });
-                const sourceFile2 = project.createSourceFile("a.ts", `import {f} = require("./f"); f(1, "b");`);
-                sourceFile.getFunctionOrThrow("f").convertParamsToDestructuredObject();
-                expect(sourceFile.getText()).to.equal(`export function f({ a, b }: { a: number; b: string[]; }) { }`);
-                expect(sourceFile2.getText()).to.equal(`import {f} = require("./f"); f(1, "b");`);
-            });
+            if (TypeScriptVersionChecker.isGreaterThan(3, 5, 0)) {
+                it("should refactor all files", () => {
+                    const { sourceFile, project
+                    } = getInfoFromText<FunctionDeclaration>("export function f(a: number, b: string[]) { }", { filePath: "f.ts", includeLibDts: true });
+                    const sourceFile2 = project.createSourceFile("a.ts", `import {f} from './f'; f(1, ["b"]);`);
+                    expect(project.getPreEmitDiagnostics().map(d => d.getMessageText())).to.deep.equal([]);
+                    sourceFile.getFunctionOrThrow("f").convertParamsToDestructuredObject();
+                    expect(sourceFile.getText()).to.equal(`export function f({ a, b }: { a: number; b: string[]; }) { }`);
+                    expect(sourceFile2.getText()).to.equal(`import {f} from './f'; f({ a: 1, b: ["b"] });`);
+                });
+            }
         });
     }
 });
