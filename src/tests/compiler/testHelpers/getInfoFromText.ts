@@ -126,3 +126,7 @@ function getInfoFromTextInternal(text: string, opts?: GetInfoFromTextOptions) {
         return isDefinitionFile ? "testFile.d.ts" : "testFile.ts";
     }
 }
+
+export function v8MajorVersion() {
+    return parseInt(process.versions.v8.substring(process.versions.v8.indexOf(""))) || 6;
+}

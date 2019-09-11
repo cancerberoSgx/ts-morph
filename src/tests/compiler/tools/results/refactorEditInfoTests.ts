@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { RefactorEditInfo } from "../../../../compiler";
 import { SyntaxKind } from "../../../../typescript";
-import { getInfoFromText } from "../../testHelpers";
+import { getInfoFromText, v8MajorVersion } from "../../testHelpers";
 
 describe(nameof(RefactorEditInfo), () => {
     describe(nameof<RefactorEditInfo>(a => a.applyChanges), () => {
-        it("should apply the refactor 'Move to a new file'", () => {
+        (v8MajorVersion() < 7 ? it : it.skip)("should apply the refactor 'Move to a new file'", () => {
             const {
                 sourceFile,
                 project

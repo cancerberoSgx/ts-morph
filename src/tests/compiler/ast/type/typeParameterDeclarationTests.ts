@@ -250,7 +250,7 @@ describe(nameof(TypeParameterDeclaration), () => {
 
         // for some reason this test was failing in 3.1. Not a big deal... ignoring.
         if (TypeScriptVersionChecker.isGreaterThanOrEqual(3, 2, 0)) {
-            it("should trim leading indentation on the contraint and default", () => {
+            it("should trim leading indentation on the constraint and default", () => {
                 doTest("class C<T extends {\n        prop: string;\n    } = {\n    }> {}", {
                     kind: StructureKind.TypeParameter,
                     name: "T",

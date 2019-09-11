@@ -165,7 +165,7 @@ describe(nameof(NamedNode), () => {
     describe(nameof<NamedNode>(n => n.findReferences), () => {
         it("should find all the references", () => {
             // most of the tests for this are in identifierTests
-            const { firstChild, sourceFile, project } = getInfoFromText<FunctionDeclaration>("function myFunction() {}\nconst reference = myFunction;");
+            const { firstChild } = getInfoFromText<FunctionDeclaration>("function myFunction() {}\nconst reference = myFunction;");
             const referencedSymbols = firstChild.findReferences();
             expect(referencedSymbols.length).to.equal(1);
         });
@@ -173,8 +173,8 @@ describe(nameof(NamedNode), () => {
 
     describe(nameof<NamedNode>(n => n.findReferencesAsNodes), () => {
         it("should find all the references and exclude the definition", () => {
-            const { firstChild, sourceFile, project } = getInfoFromText<FunctionDeclaration>("function myFunction() {}\nconst reference = myFunction;");
-            const secondSourceFile = project.createSourceFile("second.ts", "const reference2 = myFunction;");
+            const { firstChild, project } = getInfoFromText<FunctionDeclaration>("function myFunction() {}\nconst reference = myFunction;");
+            project.createSourceFile("second.ts", "const reference2 = myFunction;");
             const referencingNodes = firstChild.findReferencesAsNodes();
             expect(referencingNodes.length).to.equal(2);
             expect(referencingNodes[0].getParentOrThrow().getText()).to.equal("reference = myFunction");
@@ -184,7 +184,7 @@ describe(nameof(NamedNode), () => {
         it("should find references in initializers", () => {
             // the reference in the initializer will be classified as `isDefinition` by the compiler
             const code = `interface Test { prop: string; }\nconst partial: Test = { prop: "t" };`;
-            const { firstChild, sourceFile, project } = getInfoFromText<InterfaceDeclaration>(code);
+            const { firstChild } = getInfoFromText<InterfaceDeclaration>(code);
             const referencingNodes = firstChild.getProperties()[0].findReferencesAsNodes();
             expect(referencingNodes.length).to.equal(1);
             expect(referencingNodes[0].getParentOrThrow().getText()).to.equal(`prop: "t"`);
@@ -201,7 +201,7 @@ describe(nameof(NamedNode), () => {
 
     describe(nameof<EnumDeclaration>(n => n.getStructure), () => {
         it("should get the name", () => {
-            const { firstChild, sourceFile } = getInfoFromText<EnumDeclaration>("enum MyEnum {}");
+            const { firstChild } = getInfoFromText<EnumDeclaration>("enum MyEnum {}");
             expect(firstChild.getStructure().name).to.equal("MyEnum");
         });
     });

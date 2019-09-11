@@ -1,6 +1,8 @@
 language: node_js
 node_js:
     - "8"
+    - "10"
+    - "12"
 before_script:
     - yarn run ensure-no-project-compile-errors
     - travis_wait 20 yarn run build:declarations
@@ -9,3 +11,6 @@ script:
     - yarn run test:ts-versions
 after_script:
     - yarn run code-verification
+os:
+  - linux
+  - osx
